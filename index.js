@@ -15,18 +15,22 @@ let btns = document.getElementsByClassName("btnImageModal");
 
 
 const getPhotos = (param) => {
-  const div = document.createElement("div");
-  let cardRow = [];
+  
+  // let cardRow = [];
 
   fetch(`http://www.splashbase.co/api/v1/images/search?query=${param}`, {
     "method": "GET",
   })
     .then((response) => response.json())
     .then((parsedJson) => {
+      containerImgs.querySelectorAll('*').forEach(element=>element.remove())
+
       parsedJson.images.forEach((element) => {
+        const div = document.createElement("div");
         console.log(element);
         // for (let i = 0; i < div.length; i++)         
-        div.classList.add("col-md-4");
+        div.classList.add("col-md-4")
+        div.classList.add("images-container")
         div.innerHTML = ` <div class="card mb-4 shadow-sm">
                                                   <img class="card-img-top" src="${element.url}">
                                                    <div class="card-body">
@@ -48,24 +52,31 @@ const getPhotos = (param) => {
                                                        </div>
                                                    </div>
                                                </div>`;
-        cardRow.push(div);
+        // cardRow.push(div);
+        containerImgs.appendChild(div);
+
       });
-      containerImgs.appendChild(div);
+      
     });
     
 };
 
 const hideToggle = () => {
-  let allCards = document.querySelectorAll(".card")
+  let allCards = document.querySelectorAll(".images-container")
   let btnsHide = document.querySelectorAll(".btnHide")
   for (let i = 0; i < btnsHide.length; i++) {
     btnsHide[i].onclick = function(){
-          allCards[i].style.display="none";
+          allCards[i].style.display = "none";
       }    
   }
 
 }
-
+const btn = document.querySelector('.search-btn')
+btn.addEventListener('click', function(e){
+  e.preventDefault()
+  const input = document.querySelector('.form-control').value
+  getPhotos(input)
+})
 //  const fetchData = (param) => {
 //          let parent = document.querySelector(".highlighted-albums")
 //          let cardRow = []
