@@ -12,7 +12,6 @@ const btnFetch = document.querySelectorAll(".btnFetch");
 const containerImgs = document.querySelector(".container-images");
 const btnModalImages = document.querySelectorAll("button");
 let btns = document.getElementsByClassName("btnImageModal");
-let btnsHide = document.getElementsByClassName('btnHide')
 
 
 const getPhotos = (param) => {
@@ -20,13 +19,13 @@ const getPhotos = (param) => {
   let cardRow = [];
 
   fetch(`http://www.splashbase.co/api/v1/images/search?query=${param}`, {
-    method: "GET",
+    "method": "GET",
   })
     .then((response) => response.json())
     .then((parsedJson) => {
       parsedJson.images.forEach((element) => {
         console.log(element);
-
+        // for (let i = 0; i < div.length; i++)         
         div.classList.add("col-md-4");
         div.innerHTML = ` <div class="card mb-4 shadow-sm">
                                                   <img class="card-img-top" src="${element.url}">
@@ -36,12 +35,12 @@ const getPhotos = (param) => {
                                                            lead-in to additional content. This content is a little bit
                                                            longer.
                                                        </p>
-                                                       <div class="d-flex justify-content-between align-items-center">
+                                                       <div class="justify-content-between align-items-center">
                                                            <div class="btn-group">
                                                                <button type="button" class="btn btn-sm btn-outline-secondary btnImageModal" data-toggle="modal" data-target="#imageModal" imageUrl="${element.url}">
                                                                    View
                                                                </button>
-                                                               <button type="button" class="btn btn-sm btn-outline-secondary btnHide" imageUrl="${element.url}">
+                                                               <button type="button" class="btn btn-sm btn-outline-secondary btnHide" onclick="hideToggle()">
                                                                    Hide
                                                                </button>
                                                            </div>
@@ -55,6 +54,17 @@ const getPhotos = (param) => {
     });
     
 };
+
+const hideToggle = () => {
+  let allCards = document.querySelectorAll(".card")
+  let btnsHide = document.querySelectorAll(".btnHide")
+  for (let i = 0; i < btnsHide.length; i++) {
+    btnsHide[i].onclick = function(){
+          allCards[i].style.display="none";
+      }    
+  }
+
+}
 
 //  const fetchData = (param) => {
 //          let parent = document.querySelector(".highlighted-albums")
